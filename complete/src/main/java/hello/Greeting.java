@@ -4,6 +4,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 
 public class Greeting {
 
@@ -45,6 +47,12 @@ public class Greeting {
      */
     private final long swap_size;
 
+    /**
+     * the system load average; or a negative value if not available.
+     * {@link OperatingSystemMXBean#getSystemLoadAverage()}
+     */
+    private final double load_average;
+
     public Greeting(long id, String host_address) {
         this.id = id;
         this.host_address = host_address;
@@ -64,7 +72,11 @@ public class Greeting {
         }
 
         this.swap_size = swapSize;
+
+        this.load_average = getLoadAverage();
     }
+
+    //////////////////////////////// Spring getters ////////////////////////////////
 
     public long getId() {
         return id;
@@ -92,6 +104,16 @@ public class Greeting {
 
     public long getSwap_size() {
         return swap_size;
+    }
+
+    public double getLoad_average() {
+        return load_average;
+    }
+
+    //////////////////////////////// Values generation ////////////////////////////////
+
+    private double getLoadAverage() {
+        return ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage();
     }
 
     /**
