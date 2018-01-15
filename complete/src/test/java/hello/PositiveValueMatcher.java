@@ -7,10 +7,7 @@ public class PositiveValueMatcher extends BaseMatcher<Object> {
 
     @Override
     public boolean matches(Object item) {
-        if (item instanceof Number) {
-            return ((Number) item).doubleValue() >= 0;
-        }
-        return false;
+        return item instanceof Number && ((Number) item).doubleValue() >= 0;
     }
 
     @Override

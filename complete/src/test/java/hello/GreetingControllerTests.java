@@ -44,6 +44,22 @@ public class GreetingControllerTests {
     }
 
     @Test
+    public void jvmVersionShouldBePresent() throws Exception {
+
+        this.mockMvc.perform(get("/greeting")).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.jvm_version").exists());
+    }
+
+    @Test
+    public void loadAverageShouldBePositive() throws Exception {
+
+        this.mockMvc.perform(get("/greeting")).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.load_average").value(new PositiveValueMatcher()));
+    }
+
+    @Test
     public void swapSizeShouldNotBeNegative() throws Exception {
         this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.swap_size").value(new PositiveValueMatcher()));
