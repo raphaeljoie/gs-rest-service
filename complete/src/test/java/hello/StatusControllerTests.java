@@ -24,6 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,22 +32,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class GreetingControllerTests {
+public class StatusControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
+    public void statusShouldOnlyBeGet() throws Exception {
+
+        this.mockMvc.perform(post("/status")).andDo(print()).andExpect(status().is4xxClientError());
+    }
+
+    @Test
     public void hostAddressShouldBePresent() throws Exception {
 
-        this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/status")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.host_address").exists());
     }
 
     @Test
     public void jvmVersionShouldBePresent() throws Exception {
 
-        this.mockMvc.perform(get("/greeting")).andDo(print())
+        this.mockMvc.perform(get("/status")).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.jvm_version").exists());
     }
@@ -54,14 +61,14 @@ public class GreetingControllerTests {
     @Test
     public void loadAverageShouldBePositive() throws Exception {
 
-        this.mockMvc.perform(get("/greeting")).andDo(print())
+        this.mockMvc.perform(get("/status")).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.load_average").value(new PositiveValueMatcher()));
     }
 
     @Test
     public void swapSizeShouldNotBeNegative() throws Exception {
-        this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/status")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.swap_size").value(new PositiveValueMatcher()));
     }
 }

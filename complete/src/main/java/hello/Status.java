@@ -6,7 +6,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.management.RuntimeMXBean;
 
-public class Greeting {
+public class Status {
 
     /**
      * Id of request, unique inside a run
@@ -58,7 +58,7 @@ public class Greeting {
      */
     private final String jvm_version;
 
-    public Greeting(long id, String host_address) {
+    public Status(long id, String host_address) {
         this.id = id;
         this.host_address = host_address;
 
