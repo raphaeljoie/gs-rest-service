@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
+import java.lang.management.RuntimeMXBean;
 
 public class Greeting {
 
@@ -53,6 +54,12 @@ public class Greeting {
      */
     private final double load_average;
 
+    /**
+     * the Java virtual machine implementation version.
+     * {@link RuntimeMXBean#getVmVersion()}
+     */
+    private final String jvm_version;
+
     public Greeting(long id, String host_address) {
         this.id = id;
         this.host_address = host_address;
@@ -74,6 +81,8 @@ public class Greeting {
         this.swap_size = swapSize;
 
         this.load_average = getLoadAverage();
+
+        this.jvm_version = ManagementFactory.getRuntimeMXBean().getVmVersion();
     }
 
     //////////////////////////////// Spring getters ////////////////////////////////
@@ -116,6 +125,11 @@ public class Greeting {
     @SuppressWarnings("unused")
     public double getLoad_average() {
         return load_average;
+    }
+
+    @SuppressWarnings("unused")
+    public String getJvm_version() {
+        return jvm_version;
     }
 
     //////////////////////////////// Values generation ////////////////////////////////
