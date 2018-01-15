@@ -78,34 +78,42 @@ public class Greeting {
 
     //////////////////////////////// Spring getters ////////////////////////////////
 
+    @SuppressWarnings("unused")
     public long getId() {
         return id;
     }
 
+    @SuppressWarnings("unused")
     public String getHost_address() {
         return host_address;
     }
 
+    @SuppressWarnings("unused")
     public long getMemory_max() {
         return memory_max;
     }
 
+    @SuppressWarnings("unused")
     public long getMemory_allocated() {
         return memory_allocated;
     }
 
+    @SuppressWarnings("unused")
     public long getMemory_free() {
         return memory_free;
     }
 
+    @SuppressWarnings("unused")
     public long getMemory_free_total() {
         return memory_free_total;
     }
 
+    @SuppressWarnings("unused")
     public long getSwap_size() {
         return swap_size;
     }
 
+    @SuppressWarnings("unused")
     public double getLoad_average() {
         return load_average;
     }
@@ -118,8 +126,9 @@ public class Greeting {
 
     /**
      * @return the size of swap
-     * @throws IOException
+     * @throws IOException if something went wrong during the size computation (kept for future implementation)
      */
+    @SuppressWarnings("RedundantThrows")
     private long getSwapSize() throws IOException {
         long size = 0;
         if (System.getProperty("os.name").contains("OS X")) {
