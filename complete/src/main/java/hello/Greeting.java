@@ -1,5 +1,10 @@
 package hello;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.io.File;
+import java.io.IOException;
+
 public class Greeting {
 
     /**
@@ -35,6 +40,11 @@ public class Greeting {
      */
     private final long memory_free_total;
 
+    /**
+     * total size of swap files, measured in bytes.
+     */
+    private final long swap_size;
+
     public Greeting(long id, String host_address) {
         this.id = id;
         this.host_address = host_address;
@@ -45,6 +55,15 @@ public class Greeting {
         this.memory_allocated = runtime.totalMemory();
         this.memory_free = runtime.freeMemory();
         this.memory_free_total = memory_free + (memory_max - memory_allocated);
+
+        long swapSize = -1;
+        try {
+            swapSize = getSwapSize();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        this.swap_size = swapSize;
     }
 
     public long getId() {
@@ -69,5 +88,40 @@ public class Greeting {
 
     public long getMemory_free_total() {
         return memory_free_total;
+    }
+
+    public long getSwap_size() {
+        return swap_size;
+    }
+
+    /**
+     * @return the size of swap
+     * @throws IOException
+     */
+    private long getSwapSize() throws IOException {
+        long size = 0;
+        if (System.getProperty("os.name").contains("OS X")) {
+            // on OSX
+            final String swapDirPath = "/private/var/vm";
+            final File swapDir = new File(swapDirPath);
+
+            final File[] swapFiles = swapDir.listFiles();
+
+            if (swapFiles == null)
+                return 0;
+
+            for (File swapFile : swapFiles) {
+                if (swapFile.isFile()) {
+                    size += swapFile.length();
+                }
+            }
+        } else {
+            // TODO this is copy pasted from web. Test on Linux and other platforms
+            // Node on linux, size can be found in file "/proc/swaps"
+            // see : https://stackoverflow.com/questions/9845868/how-to-get-swap-size-in-linux-from-proc-swaps
+            throw new NotImplementedException();
+        }
+
+        return size;
     }
 }
