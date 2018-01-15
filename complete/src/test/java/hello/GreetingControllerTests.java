@@ -42,4 +42,10 @@ public class GreetingControllerTests {
         this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.host_address").exists());
     }
+
+    @Test
+    public void swapSizeShouldNotBeNegative() throws Exception {
+        this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.swap_size").value(new PositiveValueMatcher()));
+    }
 }
