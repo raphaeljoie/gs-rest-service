@@ -1,4 +1,4 @@
-package hello;
+package hello.dynamic_models;
 
 import java.io.File;
 import java.io.IOException;
